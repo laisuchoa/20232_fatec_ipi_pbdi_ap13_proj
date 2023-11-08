@@ -1,10 +1,24 @@
 -- 1.1 Estude e faça o download da base de dados disponível no link https://www.kaggle.com/datasets/csafrit2/higher-education-students-performance-evaluation
 
-
+-- AGE: Student Age (1: 18-21, 2: 22-25, 3: above 26);
+-- GENDER: Sex (1: female, 2: male);
+-- SALARY: Total salary if available (1: USD 135-200, 2: USD 201-270, 3: USD 271-340, 4: USD 341-410, 5: above 410);
+-- PREP_EXAM: Preparation to midterm exams 2: (1: closest date to the exam, 2: regularly during the semester, 3: never);
+-- NOTES: Taking notes in classes: (1: never, 2: sometimes, 3: always);
+-- GRADE: OUTPUT Grade (0: Fail, 1: DD, 2: DC, 3: CC, 4: CB, 5: BB, 6: BA, 7: AA);
 
 -- 1.2 Crie uma tabela apropriada para o armazenamento dos itens. Não se preocupe com a normalização. Uma tabela basta.
 
+CREATE TABLE IF NOT EXISTS student_prediction (
+	AGE INT,
+	GENDER INT,
+	SALARY INT,
+	PREP_EXAM INT,
+	NOTES INT,
+	GRADE INT
+);
 
+SELECT * FROM student_prediction;
 
 -- 1.3 Copie os dados do arquivo .csv para a sua tabela. Veja como no link https://www.postgresql.org/docs/current/sql-copy.html
 
