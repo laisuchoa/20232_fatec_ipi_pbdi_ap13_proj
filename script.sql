@@ -22,7 +22,7 @@ SELECT * FROM student_prediction;
 
 -- 1.3 Copie os dados do arquivo .csv para a sua tabela. Veja como no link https://www.postgresql.org/docs/current/sql-copy.html
 
-
+COPY student_prediction FROM 'C:/Users/arthu/Documents/lais/20232_fatec_ipi_pbdi_ap13_proj/13_projeto_base_de_dados_student_prediction.csv' DELIMITER ',' CSV HEADER
 
 -- 1.4 Escreva os seguintes stored procedures (incluindo um bloco anônimo de teste para cada um):
 
