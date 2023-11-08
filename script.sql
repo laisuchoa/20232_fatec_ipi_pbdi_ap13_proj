@@ -22,13 +22,30 @@ SELECT * FROM student_prediction;
 
 -- 1.3 Copie os dados do arquivo .csv para a sua tabela. Veja como no link https://www.postgresql.org/docs/current/sql-copy.html
 
-COPY student_prediction FROM 'C:/Users/arthu/Documents/lais/20232_fatec_ipi_pbdi_ap13_proj/13_projeto_base_de_dados_student_prediction.csv' DELIMITER ',' CSV HEADER
+COPY student_prediction FROM '13_projeto_base_de_dados_student_prediction.csv' DELIMITER ',' CSV HEADER
+
+SELECT * FROM student_prediction;
 
 -- 1.4 Escreva os seguintes stored procedures (incluindo um bloco anônimo de teste para cada um):
 
 -- 1.4.1 Exibe o número de estudantes maiores de idade.
 
+CREATE OR REPLACE PROCEDURE estudantesAdultos(OUT total INT)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+	SELECT COUNT(age) INTO total FROM student_prediction WHERE age >= 2;
+	RAISE NOTICE 'estudantes maiores de idade: %', total;
+END;	
+$$
 
+DO $$
+DECLARE
+	idade INT;
+BEGIN
+	CALL estudantesAdultos(idade);
+END;
+$$
 
 -- 1.4.2 Exibe o percentual de estudantes de cada sexo.
 
