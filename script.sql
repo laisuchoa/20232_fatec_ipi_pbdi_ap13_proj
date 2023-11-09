@@ -147,6 +147,32 @@ $$;
 -- 1.5.1 Responde (devolve boolean) se é verdade que todos os estudantes de renda acima de 410 são aprovados (grade > 0).
 
 
+CREATE OR REPLACE FUNCTION teste_renda_aprovados () RETURNS BOOLEAN
+LANGUAGE plpgsql
+AS $$
+DECLARE
+	i record;
+	teste BOOLEAN;
+BEGIN
+    FOR i IN (SELECT grade FROM student_prediction WHERE salary > 4) LOOP
+		CASE i.grade
+           WHEN 0 THEN teste := FALSE;
+		ELSE
+			teste := TRUE;
+		END CASE;
+	END LOOP;
+	RETURN teste;
+END;
+$$
+
+DO $$
+DECLARE
+	resultado BOOLEAN;
+BEGIN
+	SELECT teste_renda_aprovados ( ) INTO resultado;
+	RAISE NOTICE '%', resultado;
+END;
+$$;
 
 -- 1.5.2 Responde (devolve boolean) se é verdade que, entre os estudantes que fazem anotações pelo menos algumas vezes durante as aulas, pelo menos 70% são aprovados (grade > 0).
 
