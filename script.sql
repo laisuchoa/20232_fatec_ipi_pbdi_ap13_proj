@@ -49,7 +49,35 @@ $$
 
 -- 1.4.2 Exibe o percentual de estudantes de cada sexo.
 
+CREATE OR REPLACE PROCEDURE porcentagemSexo(
+	OUT porcentagemFeminina FLOAT, OUT porcentagemMasculina FLOAT)
+LANGUAGE plpgsql
+AS $$
+DECLARE
+	valorTotal FLOAT;
+	valorFeminino FLOAT;
+	valorMasculino FLOAT;
+BEGIN
+	SELECT COUNT(*) INTO valorTotal FROM student_prediction ;
+	SELECT COUNT(*) INTO valorFeminino FROM student_prediction WHERE gender = 1 ;
+	SELECT COUNT(*) INTO valorMasculino FROM student_prediction WHERE gender = 2 ;	
 
+	porcentagemFeminina := (valorFeminino/valorTotal) * 100;
+	porcentagemMasculina := (valorMasculino/valorTotal) * 100;
+
+	RAISE NOTICE 'porcentagem feminina: %, porcentagem masculina: %',
+	porcentagemFeminina, porcentagemMasculina;
+END;	
+$$
+
+DO $$
+DECLARE
+	porcentagemFeminina FLOAT;
+	porcentagemMasculina FLOAT;
+BEGIN
+	CALL porcentagemSexo(porcentagemFeminina,porcentagemMasculina);
+END;
+$$
 
 -- 1.4.3 Recebe um sexo como parâmetro em modo IN e utiliza oito parâmetros em modo OUT para dizer qual o percentual de cada nota (variável grade) obtida por estudantes daquele sexo.
 
