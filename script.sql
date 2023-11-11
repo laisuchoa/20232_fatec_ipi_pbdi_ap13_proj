@@ -146,7 +146,6 @@ $$;
 
 -- 1.5.1 Responde (devolve boolean) se é verdade que todos os estudantes de renda acima de 410 são aprovados (grade > 0).
 
-
 CREATE OR REPLACE FUNCTION teste_renda_aprovados () RETURNS BOOLEAN
 LANGUAGE plpgsql
 AS $$
@@ -176,7 +175,32 @@ $$;
 
 -- 1.5.2 Responde (devolve boolean) se é verdade que, entre os estudantes que fazem anotações pelo menos algumas vezes durante as aulas, pelo menos 70% são aprovados (grade > 0).
 
+CREATE OR REPLACE FUNCTION verificaAprovadosAnotacoes() RETURNS BOOLEAN
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    totalEstudantesAnotacoes INT;
+    totalAprovadosAnotacoes INT;
+    percentualAprovadosAnotacoes NUMERIC;
+BEGIN
+    SELECT COUNT(*) INTO totalEstudantesAnotacoes FROM student_prediction WHERE notes IN (2, 3);
+    
+	SELECT COUNT(*) INTO totalAprovadosAnotacoes FROM student_prediction WHERE notes IN (2, 3) AND grade > 0;
 
+    percentualAprovadosAnotacoes := (totalAprovadosAnotacoes * 100.0) / totalEstudantesAnotacoes;
+
+    RETURN percentualAprovadosAnotacoes >= 70.0;
+END;
+$$;
+
+DO $$
+DECLARE
+    resultado BOOLEAN;
+BEGIN
+    SELECT verificaAprovadosAnotacoes() INTO resultado;
+    RAISE NOTICE 'pelo menos 70%% dos estudantes que fazem anotações são aprovados? %', resultado;
+END;
+$$;
 
 -- 1.5.3 Devolve o percentual de alunos que se preparam pelo menos um pouco para os “midterm exams” e que são aprovados (grade > 0).
 
