@@ -204,3 +204,29 @@ $$;
 
 -- 1.5.3 Devolve o percentual de alunos que se preparam pelo menos um pouco para os “midterm exams” e que são aprovados (grade > 0).
 
+CREATE OR REPLACE FUNCTION percPreparadosAprovados() RETURNS NUMERIC
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    totalEstudantesPreparados INT;
+    totalAprovadosPreparados INT;
+    percentualAprovadosPreparados NUMERIC;
+BEGIN
+    SELECT COUNT(*) INTO totalEstudantesPreparados FROM student_prediction WHERE prep_exam IN (1, 2);
+    
+	SELECT COUNT(*) INTO totalAprovadosPreparados FROM student_prediction WHERE notes IN (1, 2) AND grade > 0;
+
+    percentualAprovadosPreparados := (totalAprovadosPreparados * 100.0) / totalEstudantesPreparados;
+
+    RETURN percentualAprovadosPreparados;
+END;
+$$;
+
+DO $$
+DECLARE
+    resultado NUMERIC;
+BEGIN
+    SELECT percPreparadosAprovados() INTO resultado;
+    RAISE NOTICE 'O percentual de alunos que se preparam pelo menos um pouco para os “midterm exams” e que são aprovados é de %', resultado;
+END;
+$$;
